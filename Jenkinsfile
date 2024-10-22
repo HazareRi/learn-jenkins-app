@@ -46,8 +46,8 @@ pipeline {
             steps {
                 sh '''
                  npm install netlify-cli
-                 netlify --version
-                 netlify deploy --prod
+                 npx netlify --version  # Use npx to ensure it's accessible
+                 npx netlify deploy --prod  # Use npx for deployment
                 '''
             }
         }
