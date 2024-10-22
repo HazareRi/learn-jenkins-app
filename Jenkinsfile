@@ -22,21 +22,6 @@ pipeline {
         }
 
         stage('Test') {
-             agent {
-                docker {
-                    image 'node:18-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                test -f build/index.html   // Check if index.html is present after build
-                npm test
-                '''
-            }
-        }
-
-         stage('Deploy to Netlify') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -45,9 +30,24 @@ pipeline {
             }
             steps {
                 sh '''
-                 npm install netlify-cli 
+                test -f build/index.html   # Check if index.html is present after build
+                npm test
+                '''
+            }
+        }
+
+        stage('Deploy to Netlify') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                 npm install netlify-cli -g
                  netlify --version
-                 netlify deploy --prod   // Deploying to Netlify
+                 netlify deploy --prod   # Deploying to Netlify
                 '''
             }
         }
@@ -55,7 +55,7 @@ pipeline {
 
     post {
         always {
-            junit 'test-results/junit.xml'  // Always publish test results
+            junit 'test-results/junit.xml'  # Always publish test results
         }
     }
 }
