@@ -30,15 +30,32 @@ pipeline {
             }
             steps {
                 sh '''
-                test -f build/index.html
+                test -f build/index.html   # Check if index.html is present after build
                 npm test
                 '''
             }
         }
+
+         stage('Deploy to Netlify') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                 npm install netlify-cli -g
+                 netlify --version
+                 netlify deploy --prod   # Deploying to Netlify
+                '''
+            }
+        }
     }
-    post{
-        always{
-            junit 'test-results/junit.xml'
+
+    post {
+        always {
+            junit 'test-results/junit.xml'  # Always publish test results
         }
     }
 }
