@@ -30,8 +30,8 @@ pipeline {
             }
             steps {
                 sh '''
-                test -f build/index.html
-                npm test
+                test -f build/index.html  # Check if the build was successful
+                npm test  # Run your test suite
                 '''
             }
         }
@@ -43,11 +43,14 @@ pipeline {
                     reuseNode true
                 }
             }
+            environment {
+                NETLIFY_AUTH_TOKEN = credentials('netlify-auth-token')  // Fetching token securely
+            }
             steps {
                 sh '''
                  npm install netlify-cli
-                 npx netlify --version  # Use npx to ensure it's accessible
-                 npx netlify deploy --prod  # Use npx for deployment
+                 npx netlify --version  # Verify the Netlify CLI installation
+                 npx netlify deploy --prod --dir=build  # Specify the build directory
                 '''
             }
         }
@@ -55,7 +58,7 @@ pipeline {
 
     post {
         always {
-            junit 'test-results/junit.xml'
+            junit 'test-results/junit.xml'  // Collect test results if available
         }
     }
 }
