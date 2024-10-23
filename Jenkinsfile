@@ -52,8 +52,7 @@ pipeline {
 
     post {
         always {
-            node {
-                // Directly call junit step within node context
+            node('master') { // Add label to node block, for example, 'master' or use your own agent label
                 junit 'test-results/*.xml'
             }
         }
