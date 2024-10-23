@@ -46,6 +46,7 @@ pipeline {
                         netlify deploy --dir=build --prod --auth=$NETLIFY_AUTH_TOKEN
                         echo "Deploy to production SITE_ID= $NETLIFY_SITE_ID"
                         node_module/.bin/netlify status
+                        node_module/.bin/netlify deploy --dir=build --prod
                         '''
                     }
                 }
