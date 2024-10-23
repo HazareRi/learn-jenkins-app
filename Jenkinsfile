@@ -52,10 +52,8 @@ pipeline {
 
     post {
         always {
-            // Wrap junit inside a node block so Jenkins can handle it correctly
-            node {
-                junit 'test-results/*.xml'
-            }
+            // Directly call junit step without additional node context
+            junit 'test-results/*.xml'
         }
     }
 }
