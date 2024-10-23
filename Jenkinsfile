@@ -52,8 +52,10 @@ pipeline {
 
     post {
         always {
-            // Directly call junit step without additional node context
-            junit 'test-results/*.xml'
+            node {
+                // Directly call junit step within node context
+                junit 'test-results/*.xml'
+            }
         }
     }
 }
