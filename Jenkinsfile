@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Add your Netlify Auth Token securely in Jenkins credentials with the ID 'netlify-auth-token'
-        NETLIFY_AUTH_TOKEN = credentials('nfp_gbLqF2Rq3MofAYEV2qKCbLSyZXMQjx6o4294') // This is where the Netlify Auth Token is referenced
+        NETLIFY_AUTH_TOKEN = credentials('nfp_gbLqF2Rq3MofAYEV2qKCbLSyZXMQjx6o4294') // Ensure this is correct and corresponds to your stored token
     }
 
     stages {
@@ -52,7 +52,10 @@ pipeline {
 
     post {
         always {
-            junit 'test-results/*.xml'
+            // Wrap junit inside a node block so Jenkins can handle it correctly
+            node {
+                junit 'test-results/*.xml'
+            }
         }
     }
 }
