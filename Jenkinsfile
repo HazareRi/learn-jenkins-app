@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Add your Netlify Auth Token securely in Jenkins credentials with the ID 'netlify-auth-token'
-        NETLIFY_AUTH_TOKEN = credentials('nfp_gbLqF2Rq3MofAYEV2qKCbLSyZXMQjx6o4294') // Ensure this is correct and corresponds to your stored token
+        NETLIFY_SITE_ID = credentials('fecaeaf6-6608-45bd-a6d9-30ec00084c6e') // Ensure this is correct and corresponds to your stored token
     }
 
     stages {
@@ -43,6 +43,7 @@ pipeline {
                         // Netlify deployment using the token from the environment
                         sh '''
                         netlify deploy --dir=build --prod --auth=$NETLIFY_AUTH_TOKEN
+                        echo "Deploy to production SITE_ID= $NETLIFY_SITE_ID"
                         '''
                     }
                 }
